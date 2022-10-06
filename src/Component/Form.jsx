@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-dom'
 import { Switch, Route, Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import formSchema from '../Validation/formSchema'
+import formSchema from '../Validation/formSchema';
 
 const initialStateObj = {
     name: "",
@@ -19,18 +20,27 @@ const initialStateObj = {
 const OrderForm = () => {
     const [orderObj, setorderObj] = useState(initialStateObj);
     const [orders, setOrders] = useState([]);
-
-
-
-    const testing = (e) => {
-        setorderObj({...orderObj, name: e.target.value})
-        console.log(e.target.name)
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault()
         setOrders([...orders, orderObj])
+        
+        
     };
+
+    const orderName = (name, value) => {
+        validate(name, value)
+        setorderObj({...orderObj, name: value})
+        console.log(orderObj)
+    }
+
+    //  console.log(orders)
+
+    const validate = (name, value) => {
+        yup.reach(formSchema, name)
+        .validate(value)
+    }
+
+    // {() => setorderObj({ ...orderObj, name: e.target.value })
 
 
 
@@ -38,11 +48,15 @@ const OrderForm = () => {
         <div>
             <Link id="order-pizza" to='/'>Home</Link>
             <form id="pizza-form">
-                <input name ="OrderName" placeholder='Order Name'
+                <input name ="name" placeholder='Order Name'
                     type="text"
                     id="name-input"
-                    onChange={(e) => setorderObj({ ...orderObj, name: e.target.value })}
-                />
+                //     onChange={(e) => setorderObj({ ...orderObj, name: e.target.value })
+                // }
+                    onChange={(e) => orderName(e.target.name, e.target.value)}
+
+                    
+                /> 
                 <select onChange={(e) => setorderObj({ ...orderObj, size: e.target.value })} id="size-dropdown">
                     <option value="Small">Small</option>
                     <option value="Meduim">Meduim</option>
