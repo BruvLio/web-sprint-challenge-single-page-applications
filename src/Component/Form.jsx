@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-dom'
 import { Switch, Route, Link } from 'react-router-dom';
 import * as yup from 'yup';
+import axios from 'axios'
 
 import formSchema from '../Validation/formSchema';
 
@@ -14,7 +15,6 @@ const initialStateObj = {
     Olives: false,
     Special: "",
 }
-
 
 
 const OrderForm = () => {
@@ -33,16 +33,13 @@ const OrderForm = () => {
         console.log(orderObj)
     }
 
-    //  console.log(orders)
+
 
     const validate = (name, value) => {
         yup.reach(formSchema, name)
         .validate(value)
+        .then()
     }
-
-    // {() => setorderObj({ ...orderObj, name: e.target.value })
-
-
 
     return (
         <div>
