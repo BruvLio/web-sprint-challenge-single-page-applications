@@ -20,6 +20,8 @@ const initialStateObj = {
 const OrderForm = () => {
     const [orderObj, setorderObj] = useState(initialStateObj);
     const [orders, setOrders] = useState([]);
+    const [formErrors, setFormErrors] = useState("");
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setOrders([...orders, orderObj])
@@ -30,15 +32,16 @@ const OrderForm = () => {
     const orderName = (name, value) => {
         validate(name, value)
         setorderObj({...orderObj, name: value})
-        console.log(orderObj)
+        // console.log(orderObj)
     }
 
 
 
-    const validate = (name, value) => {
-        yup.reach(formSchema, name)
+    const validate =  (name, value) => {
+         yup.reach(formSchema, name)
         .validate(value)
-        .then()
+        .then(() => setFormErrors(""))
+        .catch(err => setFormErrors(err.message))
     }
 
     return (
@@ -54,6 +57,8 @@ const OrderForm = () => {
 
                     
                 /> 
+                <p>{formErrors}</p>
+
                 <select onChange={(e) => setorderObj({ ...orderObj, size: e.target.value })} id="size-dropdown">
                     <option value="Small">Small</option>
                     <option value="Meduim">Meduim</option>
